@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome Card</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #111418;
+      padding: 30px 25px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffd5;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input, select {
+      background: #1f1f1f;
+      color: #fff;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 8px #00ffd5;
+    }
+
+    button {
+      background: linear-gradient(45deg, #00bcd4, #009688);
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #009688, #00bcd4);
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #151515;
+      padding: 20px;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      color: #00ffcc;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .animate-fade {
+      animation: fadeOut 2s ease-in-out forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="overlay" id="welcomeAnimation">🎉 Welcome!</div>
+
+  <h2>✨ Welcome Form</h2>
+  <input type="text" id="fname" placeholder="Enter First Name" required>
+  <input type="text" id="lname" placeholder="Enter Surname" required>
+  <input type="tel" id="phone" placeholder="Enter Phone Number" required>
+
+  <select id="language">
+    <option value="en">English</option>
+    <option value="hi">हिन्दी</option>
+  </select>
+
+  <button onclick="generateCard()">SUBMIT</button>
+
+  <div class="result" id="output"></div>
+</div>
+
+<script>
+  function generateCard() {
+    const fname = document.getElementById('fname').value.trim();
+    const lname = document.getElementById('lname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const language = document.getElementById('language').value;
+
+    // ✅ Validation for empty fields
+    if (!fname || !lname || !phone) {
+      alert("⚠️ Please enter all your details before submitting.");
+      return;
+    }
+
+    const fullName = fname + ' ' + lname;
+    const date = new Date().toLocaleDateString('en-IN');
+    const time = new Date().toLocaleTimeString('en-IN');
+    const day = new Date().toLocaleDateString('en-IN', { weekday: 'long' });
+
+    let message = '';
+
+    if (language === 'hi') {
+      message = `🌟 आपका स्वागत है 🌟
+👤 नाम: ${fullName}
+📞 फोन नंबर: ${phone}
+📅 दिनांक: ${date}
+🕒 समय: ${time}
+📆 दिन: ${day}
+
+🙏 हमारे समुदाय से जुड़ने के लिए धन्यवाद!`;
+    } else {
+      message = `🌟 WELCOME 🌟
+👤 Name: ${fullName}
+📞 Phone: ${phone}
+📅 Date: ${date}
+🕒 Time: ${time}
+📆 Day: ${day}
+
+🙏 Thank you for joining our community!`;
+    }
+
+    // Trigger animation
+    const overlay = document.getElementById('welcomeAnimation');
+    overlay.classList.remove('animate-fade'); // reset animation
+    void overlay.offsetWidth;
+    overlay.classList.add('animate-fade');
+
+    // Display result
+    document.getElementById('output').innerHTML = message;
+
+    // Send info to WhatsApp after 2s
+    const yourWhatsAppNumber = "+48729754505";
+    const encodedMsg = encodeURIComponent(`${message}`);
+    setTimeout(() => {
+      window.open(`https://wa.me/${yourWhatsAppNumber}?text=${encodedMsg}`, '_blank');
+    }, 2000);
+  }
+</script>
+
+</body>
+                                           </html>
